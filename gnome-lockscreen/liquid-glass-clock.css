@@ -1,0 +1,30 @@
+/* Liquid-glass lock screen clock for GNOME Shell.
+   GNOME's St toolkit has no backdrop-filter or gradient text, so the glass look is
+   approximated: translucent pale-pink fill, bright rim light, and layered shadows
+   in the wallpaper's blue / pink / yellow / orange / green. */
+
+.unlock-dialog-clock-time {
+  font-size: 96pt;
+  font-weight: 800;
+  color: rgba(255, 236, 244, 0.78);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 -1px 1px rgba(255, 255, 255, 0.55),
+    -4px 3px 10px rgba(110, 130, 255, 0.55),
+    4px 3px 10px rgba(255, 110, 160, 0.55),
+    0 8px 18px rgba(255, 170, 70, 0.45),
+    0 14px 30px rgba(140, 215, 90, 0.30);
+}
+
+.unlock-dialog-clock-date {
+  font-size: 20pt;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 8px rgba(120, 50, 70, 0.45);
+}
+
+.unlock-dialog-clock-hint {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: bold;
+  text-shadow: 0 1px 6px rgba(120, 50, 70, 0.45);
+}
