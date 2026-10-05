@@ -1,1 +1,126 @@
-404: Not Found
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lock Screen</title>
+<style>
+  :root {
+    --blue: #2b3a8f;
+    --pink: #e84f86;
+    --red: #e8365d;
+    --yellow: #f6b81c;
+    --green: #8fd14f;
+    --peach: #e9a98a;
+    --orange: #f07a3a;
+    --cream: #f3e6dc;
+    --bg: #b98a86;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); font-family: -apple-system, "SF Pro Display", "Segoe UI", Inter, system-ui, sans-serif; }
+
+  /* ---------- Wallpaper: blurred colourful balls ---------- */
+  .wallpaper { position: fixed; inset: 0; background: linear-gradient(#b98a86, #c9a39c 70%, #dcd2ea); overflow: hidden; }
+  .ball { position: absolute; filter: blur(clamp(10px, 2.2vw, 34px)); }
+  .ball.round { border-radius: 50%; }
+  .ball.pill { border-radius: 999px; }
+  .b1 { left: 9%;  top: 18%; width: 20%; aspect-ratio: 1; background: radial-gradient(circle at 35% 35%, #4b5bd0, var(--blue) 70%); }
+  .b2 { left: 33%; top: 17%; width: 22%; aspect-ratio: 1; background: linear-gradient(90deg, var(--pink) 0 45%, var(--red) 45%); }
+  .b3 { left: 56%; top: 15%; width: 21%; aspect-ratio: 1; background: radial-gradient(circle at 40% 35%, #ffd24a, var(--yellow) 70%); }
+  .b4 { left: 79%; top: 16%; width: 15%; aspect-ratio: 1; background: radial-gradient(circle at 30% 30%, #b6ec78, var(--green) 70%); }
+  .b5 { left: 9%;  top: 40%; width: 20%; aspect-ratio: 1; background: radial-gradient(circle at 40% 35%, #f4c8ad, var(--peach)); }
+  .b6 { left: 32%; top: 39%; width: 19%; height: 42%; background: linear-gradient(#f58a3f, #ee6a2c); }
+  .b7 { left: 55%; top: 39%; width: 22%; aspect-ratio: 1; background: radial-gradient(circle at 40% 35%, #f6906a, var(--orange)); }
+  .b8 { left: 79%; top: 40%; width: 20%; aspect-ratio: 1; background: radial-gradient(circle at 40% 35%, #fff, var(--cream)); }
+  .b9 { left: 9%;  top: 62%; width: 20%; aspect-ratio: 1; background: radial-gradient(circle at 40% 35%, #ffc83a, #e9a216 75%); }
+  .b10 { left: 55%; top: 60%; width: 24%; height: 28%; background: radial-gradient(circle at 50% 30%, #fff8ef, #f2c9b0 80%); }
+
+  /* ---------- Lock content ---------- */
+  .lock { position: fixed; inset: 0; display: grid; place-items: center; align-content: center; gap: 1.1rem; text-align: center; color: #fff; transition: opacity .6s ease, transform .6s ease, filter .6s ease; cursor: pointer; user-select: none; }
+  .lock.unlocked { opacity: 0; transform: scale(1.08); filter: blur(12px); pointer-events: none; }
+
+  /* Liquid glass clock.
+     Layer 1 (.clock-glass): frosted, refracting pane behind the digits.
+     Layer 2 (.clock-text): digits filled with the wallpaper's own colours,
+     translucent, with a bright specular rim and soft inner glow. */
+  .clock { position: relative; padding: .12em .4em .16em; border-radius: 999px; font-size: clamp(4rem, 14vw, 9.5rem); font-weight: 800; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .clock-glass {
+    position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,.28), rgba(255,255,255,.06) 45%, rgba(255,255,255,.16));
+    -webkit-backdrop-filter: blur(14px) saturate(1.8) brightness(1.08);
+            backdrop-filter: blur(14px) saturate(1.8) brightness(1.08);
+    box-shadow:
+      inset 0 1.5px 1px rgba(255,255,255,.85),
+      inset 0 -1.5px 2px rgba(255,255,255,.35),
+      inset 0 0 22px rgba(255,255,255,.18),
+      0 14px 40px rgba(90,40,60,.28);
+    border: 1px solid rgba(255,255,255,.35);
+  }
+  .clock-glass::after { /* specular sheen */
+    content: ""; position: absolute; left: 8%; right: 8%; top: 5%; height: 38%; border-radius: 999px;
+    background: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,0));
+    opacity: .6; filter: blur(2px);
+  }
+  .clock-text {
+    position: relative; display: block;
+    background-image: linear-gradient(100deg,
+      rgba(120,140,255,.95) 0%,
+      rgba(255,110,160,.95) 28%,
+      rgba(255,205,70,.95) 52%,
+      rgba(255,140,80,.95) 76%,
+      rgba(190,240,120,.95) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,.75);
+    filter: drop-shadow(0 2px 3px rgba(255,255,255,.45)) drop-shadow(0 8px 14px rgba(120,50,70,.35));
+    animation: shimmer 10s ease-in-out infinite alternate;
+  }
+  @keyframes shimmer { to { background-position: 100% 0; } }
+
+  .date { font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-weight: 500; text-shadow: 0 1px 8px rgba(0,0,0,.25); }
+  .hint { margin-top: 1.6rem; font-size: .8rem; font-weight: 700; opacity: .9; text-shadow: 0 1px 6px rgba(0,0,0,.3); }
+
+  .home { visibility: hidden; position: fixed; inset: 0; display: grid; place-items: center; color: #fff; font-size: 1.4rem; font-weight: 600; text-shadow: 0 1px 8px rgba(0,0,0,.3); }
+  .home button { margin-top: 1rem; font: inherit; font-size: 1rem; color: #fff; padding: .6rem 1.4rem; border-radius: 999px; cursor: pointer;
+    background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.5);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 1px 1px rgba(255,255,255,.7); }
+
+  @media (prefers-reduced-motion: reduce) { .clock-text { animation: none; } .lock { transition: none; } }
+</style>
+</head>
+<body>
+  <div class="wallpaper" aria-hidden="true">
+    <i class="ball round b1"></i><i class="ball round b2"></i><i class="ball round b3"></i><i class="ball round b4"></i>
+    <i class="ball round b5"></i><i class="ball pill b6"></i><i class="ball round b7"></i><i class="ball round b8"></i>
+    <i class="ball round b9"></i><i class="ball pill b10"></i>
+  </div>
+
+  <div class="home" aria-live="polite"><div>Unlocked<br><button type="button" id="relock">Lock again</button></div></div>
+
+  <main class="lock" id="lock" tabindex="0" aria-label="Lock screen. Click or press a key to unlock">
+    <div class="clock"><span class="clock-glass"></span><span class="clock-text" id="time">10:06 PM</span></div>
+    <div class="date" id="date">Monday October 5</div>
+    <div class="hint">Click or press a key to unlock</div>
+  </main>
+
+<script>
+  const lock = document.getElementById('lock');
+  const timeEl = document.getElementById('time');
+  const dateEl = document.getElementById('date');
+
+  function tick() {
+    const now = new Date();
+    timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).replace(',', '');
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  function unlock() { lock.classList.add('unlocked'); document.querySelector('.home').style.visibility = 'visible'; }
+  lock.addEventListener('click', unlock);
+  window.addEventListener('keydown', () => { if (!lock.classList.contains('unlocked')) unlock(); });
+  document.getElementById('relock').addEventListener('click', () => { lock.classList.remove('unlocked'); document.querySelector('.home').style.visibility = 'hidden'; });
+</script>
+</body>
+</html>
